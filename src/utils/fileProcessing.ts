@@ -71,8 +71,8 @@ const processSistemaData = (data: any[][]): SistemaProduct[] => {
     const quantidade = parseFloat(row[4] || '0'); // Quinta coluna (E - estoque)
     const custo = parseFloat(row[5] || '0'); // Sexta coluna (F - custo)
     
-    // Filtrar apenas picanhas e filé mignon
-    if (nome && (nome.includes('picanha') || nome.includes('filé mignon') || nome.includes('file mignon'))) {
+    // Filtrar apenas picanhas e filé mignon, excluindo cordão
+    if (nome && (nome.includes('picanha') || nome.includes('filé mignon') || nome.includes('file mignon')) && !nome.includes('cordão')) {
       products.push({
         codigo,
         nome: row[1], // Nome original com capitalização
