@@ -71,8 +71,9 @@ const processSistemaData = (data: any[][]): SistemaProduct[] => {
     const quantidade = parseFloat(row[4] || '0'); // Quinta coluna (E - estoque)
     const custo = parseFloat(row[5] || '0'); // Sexta coluna (F - custo)
     
-    // Filtrar apenas picanhas e filé mignon, excluindo cordão
-    if (nome && (nome.includes('picanha') || nome.includes('filé mignon') || nome.includes('file mignon')) && !nome.includes('cordão')) {
+    // Filtrar apenas picanhas e filé mignon, excluindo cordão e código específico 145835
+    if (nome && (nome.includes('picanha') || nome.includes('filé mignon') || nome.includes('file mignon')) 
+        && !nome.includes('cordão') && codigo !== '145835') {
       products.push({
         codigo,
         nome: row[1], // Nome original com capitalização
@@ -107,8 +108,8 @@ const processContagemData = (data: any[][]): ContagemProduct[] => {
     
     console.log(`Processando coluna ${col}: código="${codigo}", nome="${nome}"`);
     
-    if (!codigo || !nome) {
-      console.log(`Pulando produto vazio na coluna ${col}`);
+    if (!codigo || !nome || codigo === '145835') {
+      console.log(`Pulando produto vazio ou código 145835 na coluna ${col}`);
       continue;
     }
     
