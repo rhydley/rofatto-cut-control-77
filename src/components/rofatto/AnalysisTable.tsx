@@ -37,15 +37,24 @@ export const AnalysisTable = ({ data }: AnalysisTableProps) => {
   return (
     <div className="space-y-6">
       {hasLargeDeviation && (
-        <Card className="border-warning bg-warning-light">
+        <Card className="border-warning bg-warning/10">
           <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <AlertTriangle className="h-5 w-5 text-warning" />
-              <div>
-                <h3 className="font-semibold text-warning">Atenção: Desvios Detectados</h3>
-                <p className="text-sm text-warning/80">
-                  Alguns produtos apresentam desvios superiores a 1kg
-                </p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="h-5 w-5 text-warning" />
+                <div>
+                  <h3 className="font-semibold text-warning">Atenção: Desvios Detectados</h3>
+                  <p className="text-sm text-warning/80">
+                    Alguns produtos apresentam desvios superiores a 1kg
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-warning">
+                  R$ {data.filter(item => Math.abs(item.diferenca) > 1)
+                    .reduce((acc, item) => acc + Math.abs(item.divergenciaValor), 0).toFixed(2)}
+                </div>
+                <div className="text-sm text-warning/80">Valor em risco</div>
               </div>
             </div>
           </CardContent>
@@ -103,7 +112,7 @@ export const AnalysisTable = ({ data }: AnalysisTableProps) => {
                       <TableCell className="text-right font-mono">
                         {item.quantidadePecas}
                       </TableCell>
-                      <TableCell className="text-right font-mono text-green-600">
+                      <TableCell className="text-right font-mono text-success font-semibold">
                         R$ {item.custoKg.toFixed(2)}
                       </TableCell>
                       <TableCell className="text-right font-mono">
@@ -119,13 +128,13 @@ export const AnalysisTable = ({ data }: AnalysisTableProps) => {
                         </div>
                       </TableCell>
                       <TableCell className="text-right font-mono">
-                        <span className={`font-semibold ${
-                          item.divergenciaValor > 0 ? 'text-success' : 
-                          item.divergenciaValor < 0 ? 'text-danger' : 
-                          'text-warning'
+                        <div className={`font-bold text-lg px-2 py-1 rounded ${
+                          item.divergenciaValor > 0 ? 'text-success bg-success/10' : 
+                          item.divergenciaValor < 0 ? 'text-danger bg-danger/10' : 
+                          'text-warning bg-warning/10'
                         }`}>
                           R$ {item.divergenciaValor > 0 ? '+' : ''}{item.divergenciaValor.toFixed(2)}
-                        </span>
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <Badge variant={getVariant(item.diferenca)} className="font-medium">
